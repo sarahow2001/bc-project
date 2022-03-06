@@ -1,12 +1,12 @@
 const db = require("../db/connection");
 
-exports.fetchTopics = () => {
+const fetchTopics = () => {
   return db.query("SELECT * FROM topics").then(({ rows }) => {
     return rows;
   });
 };
 
-exports.fetchArticleId = (article_id) => {
+const fetchArticleId = (article_id) => {
   const articleQuery = {
     text: "SELECT * FROM articles WHERE article_id = $1 ;",
     values: [article_id],
@@ -23,9 +23,26 @@ exports.fetchArticleId = (article_id) => {
   });
 };
 
-// exports.updatedArticleId=(articleId) => {
-//   return db
-//   .query("UPDATE articles SET votes = 0 WHERE article_id "
+const updatedArticleId = async (articleId, body) => {
+  const article = await fetchArticleId(articleId);
+  const newVotes = article[0].votes + body.inc_votes;
 
-//   )
+  
 
+  return db
+    .query(
+      "UPDATE articles SET votes = $1 WHERE article_id = $2 RETURNING * ; ",
+      [newVotes, articleId]
+    )
+    .then(({ rows }) => {
+      
+      if (!rows.length)
+        Promise.reject({
+          status: 404,
+          msg: "no article with ID : ",
+        });
+      return rows;
+    });
+};
+
+module.exports = { fetchTopics, fetchArticleId, updatedArticleId };
