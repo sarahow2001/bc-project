@@ -10,13 +10,16 @@ const {
   getTopics,
   getArticleIds,
   patchArticleIds,
+  getArticles,
+  getUsers,
 } = require("./controllers/controllers");
 app.use(bodyParser.json());
 
 //get//
 app.get("/api/topics", getTopics);
+app.get("/api/articles", getArticles);
 app.get("/api/articles/:article_id", getArticleIds);
-
+app.get("/api/users", getUsers);
 //patch//
 app.patch("/api/articles/:article_id", patchArticleIds);
 
