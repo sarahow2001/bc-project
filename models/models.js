@@ -26,16 +26,12 @@ const fetchArticleId = (article_id) => {
 const updatedArticleId = async (articleId, body) => {
   const article = await fetchArticleId(articleId);
   const newVotes = article[0].votes + body.inc_votes;
-
-  
-
   return db
     .query(
       "UPDATE articles SET votes = $1 WHERE article_id = $2 RETURNING * ; ",
       [newVotes, articleId]
     )
     .then(({ rows }) => {
-      
       if (!rows.length)
         Promise.reject({
           status: 404,
@@ -45,4 +41,21 @@ const updatedArticleId = async (articleId, body) => {
     });
 };
 
-module.exports = { fetchTopics, fetchArticleId, updatedArticleId };
+const fetchArticles = () => {
+  return db.query("SELECT * FROM articles").then(({ rows }) => {
+    return rows;
+  });
+};
+
+const fetchUsers = () => {
+  return db.query("SELECT * FROM users").then(({ rows }) => {
+    return rows;
+  });
+};
+module.exports = {
+  fetchTopics,
+  fetchArticleId,
+  updatedArticleId,
+  fetchArticles,
+  fetchUsers,
+};

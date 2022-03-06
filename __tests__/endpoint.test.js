@@ -19,7 +19,7 @@ describe("Endpoints", () => {
     });
   });
 
-  describe("#3 api/topics", () => {
+  describe("GET/api/topics", () => {
     test("return an array of topic objects ", () => {
       return request(app)
         .get("/api/topics")
@@ -31,6 +31,27 @@ describe("Endpoints", () => {
             expect.objectContaining({
               slug: expect.any(String),
               description: expect.any(String),
+            })
+          );
+        });
+    });
+  });
+  describe("GET /api/articles", () => {
+    test("should return an array of objects ", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeInstanceOf(Array);
+          expect(articles[0]).toEqual(
+            expect.objectContaining({
+              article_id: expect.any(Number),
+              author: expect.any(String),
+              body: expect.any(String),
+              created_at: expect.any(String),
+              title: expect.any(String),
+              topic: expect.any(String),
+              votes: expect.any(Number),
             })
           );
         });
@@ -73,6 +94,24 @@ describe("PATCH Testing", () => {
           created_at: "2020-10-16T05:03:00.000Z",
           votes: 20,
         });
+      });
+  });
+});
+
+describe("GET/api/users", () => {
+  test("should return an array of object with a username property  ", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body: { users } }) => {
+        expect(users).toBeInstanceOf(Array);
+        expect(users[0]).toEqual(
+          expect.objectContaining({
+            username: expect.any(String),
+            name: expect.any(String),
+            avatar_url: expect.any(String),
+          })
+        );
       });
   });
 });

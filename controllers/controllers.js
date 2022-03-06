@@ -1,7 +1,10 @@
+const { get } = require("express/lib/response");
 const {
   fetchTopics,
   fetchArticleId,
   updatedArticleId,
+  fetchUsers,
+  fetchArticles,
 } = require("../models/models");
 
 exports.getTopics = (req, res, next) => {
@@ -33,6 +36,28 @@ exports.patchArticleIds = (req, res, next) => {
       res.status(200).send({ articles });
     })
 
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.getArticles = (req, res, next) => {
+  fetchArticles()
+    .then((articles) => {
+      console.log(articles,'<<<<')
+      return res.status(200).send({ articles: articles });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.getUsers = (req, res, next) => {
+  fetchUsers()
+    .then((users) => {
+      console.log(users,"<<<<<<");
+      return res.status(200).send({ users: users });
+    })
     .catch((err) => {
       next(err);
     });
