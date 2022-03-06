@@ -1,12 +1,16 @@
 const express = require("express");
 const app = express();
 const { handle500s } = require("./errors");
-const { getTopics } = require("./controllers/controllers");
+const { getTopics, getArticleIds , patchArticleIds } = require("./controllers/controllers");
 
+//get//
 app.get("/api/topics", getTopics);
+app.get("/api/articles/:article_id", getArticleIds);
 
+//patch//
+// app.patch("/api/articles/:article_id",patchArticleIds);
 app.all("/*", (req, res, next) => {
-  res.status(404).send({msg:"Path not found" });
+  res.status(404).send({ msg: "Path not found" });
 });
 
 app.use(handle500s);
