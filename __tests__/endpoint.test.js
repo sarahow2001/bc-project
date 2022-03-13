@@ -58,7 +58,7 @@ describe("Endpoints", () => {
   });
 
   //article end points //<<
-  describe("GET /api/articles", () => {
+  describe("GET/api/articles", () => {
     test("should return an array of objects ", () => {
       return request(app)
         .get("/api/articles")
@@ -101,6 +101,72 @@ describe("Endpoints", () => {
   });
 });
 
+describe("GET /api/articles/:article_id/comments", () => {
+  test("return an array of comments for the givin article id  ", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then(({ body: { comments } }) => {
+        expect(comments).toBeInstanceOf(Array);
+        expect(comments[0]).toEqual(
+          expect.objectContaining({
+            article_id: expect.any(Number),
+            author: expect.any(String),
+            body: expect.any(String),
+            created_at: expect.any(String),
+            votes: expect.any(Number),
+          })
+        );
+      });
+  });
+});
+
+describe("GET/api/articles", () => {
+  test("should return an array of objects ", () => {
+    return request(app)
+      .get("/api/articles?order=asc&&sort_by=author")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toBeInstanceOf(Array);
+        expect(articles[0].author).toEqual("butter_bridge");
+        expect(articles[1].author).toEqual("butter_bridge");
+        expect(articles[2].author).toEqual("butter_bridge");
+        expect(articles[3].author).toEqual("icellusedkars");
+        expect(articles[4].author).toEqual("icellusedkars");
+      });
+  });
+});
+
+describe("GET/api/articles", () => {
+  test("should return an array of objects ", () => {
+    return request(app)
+      .get("/api/articles?order=asc&&sort_by=author")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toBeInstanceOf(Array);
+        expect(articles[0].author).toEqual("butter_bridge");
+        expect(articles[1].author).toEqual("butter_bridge");
+        expect(articles[2].author).toEqual("butter_bridge");
+        expect(articles[3].author).toEqual("icellusedkars");
+        expect(articles[4].author).toEqual("icellusedkars");
+      });
+  });
+});
+describe("GET/api/articles", () => {
+  test("should return an array of objects ", () => {
+    return request(app)
+      .get("/api/articles?topic=mitch")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toBeInstanceOf(Array);
+        expect(articles[0].topic).toEqual("mitch");
+        expect(articles[1].topic).toEqual("mitch");
+        expect(articles[2].topic).toEqual("mitch");
+        expect(articles[3].topic).toEqual("mitch");
+        expect(articles[4].topic).toEqual("mitch");
+      });
+  });
+});
 //Patch //<<
 describe("PATCH Testing", () => {
   test("return updated object  ", () => {
@@ -118,26 +184,6 @@ describe("PATCH Testing", () => {
           created_at: "2020-10-16T05:03:00.000Z",
           votes: 20,
         });
-      });
-  });
-});
-
-describe("GET /api/articles/:article_id/comments", () => {
-  test("return an array of comments for the givin article id  ", () => {
-    return request(app)
-      .get("/api/articles/1/comments")
-      .expect(200)
-      .then(({ body: { comments } }) => {
-        expect(comments).toBeInstanceOf(Array);
-        expect(comments[0]).toEqual(
-          expect.objectContaining({
-            article_id: expect.any(Number),
-            author: expect.any(String),
-            body: expect.any(String),
-            created_at: expect.any(String),
-            votes: expect.any(Number),
-          })
-        );
       });
   });
 });

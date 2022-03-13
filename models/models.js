@@ -5,8 +5,6 @@ const fetchTopics = () => {
     return rows;
   });
 };
-// JOIN comments ON article_id = comments.article_id
-// COUNT(comment.comment_id) AS comment_count
 
 const fetchArticleId = (article_id) => {
   const articleQuery = `SELECT  articles.* , COUNT(comments.comment_id) AS comment_count
@@ -44,8 +42,15 @@ const updatedArticleId = async (articleId, body) => {
     });
 };
 
-const fetchArticles = () => {
-  return db.query("SELECT * FROM articles").then(({ rows }) => {
+const fetchArticles = (order = "desc", sort_by = "created_at", topic) => {
+  let querys = `SELECT * FROM articles`;
+  if (topic) {
+    querys += ` WHERE topic LIKE '${topic}'`;
+  }
+  querys += `  ORDER BY ${sort_by} ${order.toUpperCase()};`;
+
+  console.log(querys, "<<<<<<<<");
+  return db.query(querys).then(({ rows }) => {
     return rows;
   });
 };
@@ -60,7 +65,6 @@ const fetchComments = (article_id) => {
   return db
     .query(`SELECT * FROM comments WHERE article_id = ${article_id}`)
     .then(({ rows }) => {
-      console.log("in models", rows);
       return rows;
     });
 };
