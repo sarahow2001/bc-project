@@ -5,6 +5,7 @@ const {
   updatedArticleId,
   fetchUsers,
   fetchArticles,
+  fetchComments,
 } = require("../models/models");
 
 exports.getTopics = (req, res, next) => {
@@ -44,7 +45,6 @@ exports.patchArticleIds = (req, res, next) => {
 exports.getArticles = (req, res, next) => {
   fetchArticles()
     .then((articles) => {
-      console.log(articles,'<<<<')
       return res.status(200).send({ articles: articles });
     })
     .catch((err) => {
@@ -55,8 +55,18 @@ exports.getArticles = (req, res, next) => {
 exports.getUsers = (req, res, next) => {
   fetchUsers()
     .then((users) => {
-      console.log(users,"<<<<<<");
       return res.status(200).send({ users: users });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.getComments = (req, res, next) => {
+  fetchComments(req.params.article_id)
+    .then((comments) => {
+      console.log(comments, "here...");
+      return res.status(200).send({ comments: comments });
     })
     .catch((err) => {
       next(err);
