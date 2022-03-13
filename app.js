@@ -12,6 +12,7 @@ const {
   patchArticleIds,
   getArticles,
   getUsers,
+  getComments,
 } = require("./controllers/controllers");
 app.use(bodyParser.json());
 
@@ -20,6 +21,8 @@ app.get("/api/topics", getTopics);
 app.get("/api/articles", getArticles);
 app.get("/api/articles/:article_id", getArticleIds);
 app.get("/api/users", getUsers);
+app.get("/api/articles/:article_id/comments", getComments);
+
 //patch//
 app.patch("/api/articles/:article_id", patchArticleIds);
 
