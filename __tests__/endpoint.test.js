@@ -80,7 +80,7 @@ describe("Endpoints", () => {
     });
   });
 
-  describe.only("GET/api/articles/:article_id", () => {
+  describe("GET/api/articles/:article_id", () => {
     test("status 200 - responds with article obj", () => {
       return request(app)
         .get("/api/articles/2")
