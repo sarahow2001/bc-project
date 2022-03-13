@@ -43,7 +43,7 @@ exports.patchArticleIds = (req, res, next) => {
 };
 
 exports.getArticles = (req, res, next) => {
-  fetchArticles()
+  fetchArticles(req.query.order, req.query.sort_by, req.query.topic)
     .then((articles) => {
       return res.status(200).send({ articles: articles });
     })
@@ -65,7 +65,7 @@ exports.getUsers = (req, res, next) => {
 exports.getComments = (req, res, next) => {
   fetchComments(req.params.article_id)
     .then((comments) => {
-      console.log(comments, "here...");
+      
       return res.status(200).send({ comments: comments });
     })
     .catch((err) => {
