@@ -69,7 +69,6 @@ const fetchComments = (article_id) => {
 };
 
 const addComment = (article_id, username, body) => {
-  console.log(article_id, username, body, "<<<<<<<<<<<<<<<<<<<<");
   return db
     .query(
       `INSERT INTO comments (article_id, author, body) VALUES (${article_id}, '${username}', '${body}') RETURNING *;`
@@ -77,9 +76,13 @@ const addComment = (article_id, username, body) => {
     .then(({ rows }) => rows);
 };
 
-// const removeComment = (article_id, username, body) => {
-
-// }
+const removeComment = (comment_id) => {
+  const deletedComment = db.query(
+    `DELETE FROM comments WHERE comment_id = $1 RETURNING *;`,
+    [comment_id]
+  );
+  return deletedComment;
+};
 
 module.exports = {
   fetchTopics,
@@ -89,5 +92,5 @@ module.exports = {
   fetchUsers,
   fetchComments,
   addComment,
-  //removeComment
+  removeComment,
 };

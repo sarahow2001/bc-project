@@ -13,7 +13,7 @@ const {
   getUsers,
   getComments,
   getNewComments,
-  //deleteComments
+  deleteComments,
 } = require("./controllers/controllers");
 
 app.use(bodyParser.json());
@@ -31,19 +31,19 @@ app.patch("/api/articles/:article_id", patchArticleIds);
 //post//
 app.post("/api/articles/:article_id/comments", getNewComments);
 
+//delete//
+app.delete("/api/comments/:comment_id", deleteComments);
+
 //all//
 app.all("/*", (req, res, next) => {
   res.status(404).send({ msg: "Path not found" });
 });
 app.use(handle500s);
 
-//delete//
-//app.delete("/api/comments/:comment_id", deleteComments);
-
-// app.use((err, req, res, next) => {
-//   if (err.status && err.msg) {
-//     res.status(err.status).send({ msg: "path not found " });
-//   } else next(err);
-// });
+app.use((err, req, res, next) => {
+  if (err.status && err.msg) {
+    res.status(err.status).send({ msg: "path not found " });
+  } else next(err);
+});
 
 module.exports = app;
