@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-
 const app = express();
 const bodyParser = require("body-parser");
 
@@ -13,7 +12,10 @@ const {
   getArticles,
   getUsers,
   getComments,
+  getNewComments,
+  //deleteComments
 } = require("./controllers/controllers");
+
 app.use(bodyParser.json());
 
 //get//
@@ -26,10 +28,17 @@ app.get("/api/articles/:article_id/comments", getComments);
 //patch//
 app.patch("/api/articles/:article_id", patchArticleIds);
 
+//post//
+app.post("/api/articles/:article_id/comments", getNewComments);
+
+//all//
 app.all("/*", (req, res, next) => {
   res.status(404).send({ msg: "Path not found" });
 });
 app.use(handle500s);
+
+//delete//
+//app.delete("/api/comments/:comment_id", deleteComments);
 
 // app.use((err, req, res, next) => {
 //   if (err.status && err.msg) {
