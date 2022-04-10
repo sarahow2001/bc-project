@@ -49,7 +49,6 @@ const fetchArticles = (order = "desc", sort_by = "created_at", topic) => {
   }
   querys += `  ORDER BY ${sort_by} ${order.toUpperCase()};`;
 
-  console.log(querys, "<<<<<<<<");
   return db.query(querys).then(({ rows }) => {
     return rows;
   });
@@ -69,6 +68,19 @@ const fetchComments = (article_id) => {
     });
 };
 
+const addComment = (article_id, username, body) => {
+  console.log(article_id, username, body, "<<<<<<<<<<<<<<<<<<<<");
+  return db
+    .query(
+      `INSERT INTO comments (article_id, author, body) VALUES (${article_id}, '${username}', '${body}') RETURNING *;`
+    )
+    .then(({ rows }) => rows);
+};
+
+// const removeComment = (article_id, username, body) => {
+
+// }
+
 module.exports = {
   fetchTopics,
   fetchArticleId,
@@ -76,4 +88,6 @@ module.exports = {
   fetchArticles,
   fetchUsers,
   fetchComments,
+  addComment,
+  //removeComment
 };
