@@ -7,6 +7,7 @@ const {
   fetchArticles,
   fetchComments,
   addComment,
+  removeComment,
 } = require("../models/models");
 
 exports.getTopics = (req, res, next) => {
@@ -85,13 +86,14 @@ exports.getNewComments = (req, res, next) => {
     });
 };
 
-// exports.deleteComments = (req, res, next) => {
-//   const { deleteCom } = req.params;
-//   removeComment(deleteCom)
-//     .then((comment) => {
-//       return res.status(204).send("no content");
-//     })
-//     .catch((err) => {
-//       next(err);
-//     });
-// };
+exports.deleteComments = (req, res, next) => {
+  const { comment_id } = req.params;
+  removeComment(comment_id)
+    .then((comment) => {
+      console.log(comment, "here");
+      return res.status(204).send("no content");
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
